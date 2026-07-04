@@ -1,13 +1,14 @@
 package com.example.d288.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,18 +26,25 @@ public class Customer {
     @Column(name = "customer_id")
     private Long id;
 
+    @NotEmpty(message = "First name is required")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotEmpty(message = "Last name is required")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotEmpty(message = "Address is required")
     @Column(name = "address")
     private String address;
 
+    @NotEmpty(message = "Postal code is required")
     @Column(name = "postal_code")
+    @com.fasterxml.jackson.annotation.JsonProperty("postal_code")
     private String postalCode;
 
+    @NotEmpty(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9\\-\\+\\s\\(\\)]*$", message = "Phone number format is invalid")
     @Column(name = "phone")
     private String phone;
 
