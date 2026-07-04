@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
-
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "divisions")
@@ -38,4 +39,10 @@ public class Division {
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    // ONE division → MANY customers (Customer owns the FK)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "division")
+    private Set<Customer> customers = new HashSet<>();
 }
