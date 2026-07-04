@@ -57,4 +57,14 @@ public class Cart {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItem> cartItems = new HashSet<>();
+
+    public void addCartItem(CartItem cartItem) {
+        if (cartItem != null) {
+            if (cartItems == null) {
+                cartItems = new HashSet<>();
+            }
+            cartItems.add(cartItem);
+            cartItem.setCart(this);
+        }
+    }
 }
