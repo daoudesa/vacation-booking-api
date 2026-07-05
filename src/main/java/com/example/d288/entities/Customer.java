@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,11 +27,11 @@ public class Customer {
     private Long id;
 
     @NotEmpty(message = "First name is required")
-    @Column(name = "first_name")
+    @Column(name = "customer_first_name")
     private String firstName;
 
     @NotEmpty(message = "Last name is required")
-    @Column(name = "last_name")
+    @Column(name = "customer_last_name")
     private String lastName;
 
     @NotEmpty(message = "Address is required")

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class CartItem {
     @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(
-            name = "cart_item_excursion",
+            name = "excursion_cartitem",
             joinColumns = @JoinColumn(name = "cart_item_id"),
             inverseJoinColumns = @JoinColumn(name = "excursion_id")
     )

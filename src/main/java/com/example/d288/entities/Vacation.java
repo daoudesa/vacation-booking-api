@@ -32,10 +32,10 @@ public class Vacation {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "travel_price")
+    @Column(name = "travel_fare_price")
     private BigDecimal travelPrice;
 
-    @Column(name = "image_URL")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "create_date")
