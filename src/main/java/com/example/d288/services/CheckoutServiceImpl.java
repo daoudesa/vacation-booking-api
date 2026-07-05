@@ -29,6 +29,11 @@ public class CheckoutServiceImpl implements CheckoutService {
         Set<CartItem> cartItems = purchase.getCartItems();
         Customer customer = purchase.getCustomer();
 
+        // Angular sends placeholder ids of 0 for new carts/cart items;
+        // force null so Hibernate always treats them as new inserts
+        cart.setId(null);
+        cartItems.forEach(cartItem -> cartItem.setId(null));
+
         // generate a unique tracking number for this order
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
