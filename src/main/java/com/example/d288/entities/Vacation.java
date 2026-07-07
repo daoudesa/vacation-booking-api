@@ -27,22 +27,22 @@ public class Vacation {
     private Long id;
 
     @Column(name = "vacation_title")
-    private String vacationTitle;
+    private String vacation_title;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "travel_fare_price")
-    private BigDecimal travelPrice;
+    private BigDecimal travel_price;
 
     @Column(name = "image_url")
-    private String imageUrl;
+    private String image_URL;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
-    private Date lastUpdate;
+    private Date last_update;
 
     // ONE vacation → MANY excursions (Excursion owns the FK, arrow both ways = bidirectional)
     @ToString.Exclude

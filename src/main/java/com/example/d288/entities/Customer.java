@@ -41,7 +41,7 @@ public class Customer {
     @NotEmpty(message = "Postal code is required")
     @Column(name = "postal_code")
     @com.fasterxml.jackson.annotation.JsonProperty("postal_code")
-    private String postalCode;
+    private String postal_code;
 
     @NotEmpty(message = "Phone number is required")
     @Pattern(regexp = "^[0-9\\-\\+\\s\\(\\)]*$", message = "Phone number format is invalid")
@@ -49,10 +49,10 @@ public class Customer {
     private String phone;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
-    private Date lastUpdate;
+    private Date last_update;
 
     // MANY customers → ONE division
     @ToString.Exclude
@@ -75,5 +75,8 @@ public class Customer {
             carts.add(cart);
             cart.setCustomer(this);
         }
+    }
+
+    public void setPostalCode(String s) {
     }
 }

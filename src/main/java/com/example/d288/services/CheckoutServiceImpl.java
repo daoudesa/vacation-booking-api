@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,6 +34,15 @@ public class CheckoutServiceImpl implements CheckoutService {
         // force null so Hibernate always treats them as new inserts
         cart.setId(null);
         cartItems.forEach(cartItem -> cartItem.setId(null));
+
+        // set timestamps since Angular doesn't send them
+        Date now = new Date();
+        cart.setCreateDate(now);
+        cart.setLastUpdate(now);
+        cartItems.forEach(cartItem -> {
+            cartItem.setCreateDate(now);
+            cartItem.setLastUpdate(now);
+        });
 
         // generate a unique tracking number for this order
         String orderTrackingNumber = generateOrderTrackingNumber();

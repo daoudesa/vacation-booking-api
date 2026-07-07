@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,10 +29,10 @@ public class Cart {
     private String orderTrackingNumber;
 
     @Column(name = "package_price")
-    private BigDecimal packagePrice;
+    private BigDecimal package_price;
 
     @Column(name = "party_size")
-    private Integer partySize;
+    private Integer party_size;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

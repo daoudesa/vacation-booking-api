@@ -26,13 +26,13 @@ public class Country {
     private Long id;
 
     @Column(name = "country")
-    private String countryName;
+    private String country_name;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
-    private Date lastUpdate;
+    private Date last_update;
 
     // ONE country → MANY divisions (Division owns the FK, no arrow here)
     @ToString.Exclude
