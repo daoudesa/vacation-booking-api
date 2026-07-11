@@ -7,6 +7,8 @@ import com.example.d288.entities.Division;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -21,7 +23,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
         // only insert sample data if we don't already have more than the seeded customer
         if (customerRepository.count() > 1) {
             return;
@@ -31,6 +32,8 @@ public class DataLoader implements CommandLineRunner {
         Division division = divisionRepository.findById(4L)
                 .orElseThrow(() -> new RuntimeException("Seed division not found — check your database"));
 
+        Date now = new Date();
+
         Customer c1 = new Customer();
         c1.setFirstName("John");
         c1.setLastName("Smith");
@@ -38,6 +41,8 @@ public class DataLoader implements CommandLineRunner {
         c1.setPostalCode("90210");
         c1.setPhone("555-123-4567");
         c1.setDivision(division);
+        c1.setCreateDate(now);
+        c1.setLastUpdate(now);
 
         Customer c2 = new Customer();
         c2.setFirstName("Emily");
@@ -46,6 +51,8 @@ public class DataLoader implements CommandLineRunner {
         c2.setPostalCode("90211");
         c2.setPhone("555-234-5678");
         c2.setDivision(division);
+        c2.setCreateDate(now);
+        c2.setLastUpdate(now);
 
         Customer c3 = new Customer();
         c3.setFirstName("Michael");
@@ -54,6 +61,8 @@ public class DataLoader implements CommandLineRunner {
         c3.setPostalCode("90212");
         c3.setPhone("555-345-6789");
         c3.setDivision(division);
+        c3.setCreateDate(now);
+        c3.setLastUpdate(now);
 
         Customer c4 = new Customer();
         c4.setFirstName("Sarah");
@@ -62,6 +71,8 @@ public class DataLoader implements CommandLineRunner {
         c4.setPostalCode("90213");
         c4.setPhone("555-456-7890");
         c4.setDivision(division);
+        c4.setCreateDate(now);
+        c4.setLastUpdate(now);
 
         Customer c5 = new Customer();
         c5.setFirstName("David");
@@ -70,6 +81,8 @@ public class DataLoader implements CommandLineRunner {
         c5.setPostalCode("90214");
         c5.setPhone("555-567-8901");
         c5.setDivision(division);
+        c5.setCreateDate(now);
+        c5.setLastUpdate(now);
 
         customerRepository.save(c1);
         customerRepository.save(c2);

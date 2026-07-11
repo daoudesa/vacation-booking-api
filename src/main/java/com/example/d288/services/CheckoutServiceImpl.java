@@ -4,6 +4,7 @@ import com.example.d288.dao.CustomerRepository;
 import com.example.d288.entities.Cart;
 import com.example.d288.entities.CartItem;
 import com.example.d288.entities.Customer;
+import com.example.d288.entities.StatusType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         // generate a unique tracking number for this order
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
+        cart.setStatus(StatusType.ordered);
 
         // link each cart item back to the cart (maintain both sides of the relationship)
         cartItems.forEach(cart::addCartItem);
