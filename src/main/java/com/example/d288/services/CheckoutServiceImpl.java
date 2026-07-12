@@ -29,7 +29,13 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         Cart cart = purchase.getCart();
         Set<CartItem> cartItems = purchase.getCartItems();
-        Customer customer = purchase.getCustomer();
+        Customer incomingCustomer = purchase.getCustomer();
+
+        // Angular only sends a partial customer object (name, address, phone, id).
+        // Fetch the real, complete customer record so we don't overwrite
+        // existing fields like createDate/division with nulls.
+        Customer customer = customerRepository.findById(incomingCustomer.getId())
+                .orElse(incomingCustomer);
 
         // Angular sends placeholder ids of 0 for new carts/cart items;
         // force null so Hibernate always treats them as new inserts
