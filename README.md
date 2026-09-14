@@ -1,27 +1,105 @@
-<strong> **DO NOT DISTRIBUTE OR PUBLICLY POST SOLUTIONS TO THESE LABS. MAKE ALL FORKS OF THIS REPOSITORY WITH SOLUTION CODE PRIVATE. PLEASE REFER TO THE STUDENT CODE OF CONDUCT AND ETHICAL EXPECTATIONS FOR COLLEGE OF INFORMATION TECHNOLOGY STUDENTS FOR SPECIFICS. ** </strong>
-# WESTERN GOVERNORS UNIVERSITY 
-## D288 – BACK-END PROGRAMMING
-Welcome to Back-End Programming! This is an opportunity for students to develop object-oriented applications that can be integrated with relational databases, write code for object-oriented applications using Spring framework, and implements design patterns for object-oriented applications. 
-FOR SPECIFIC TASK INSTRUCTIONS AND REQUIREMENTS FOR THIS ASSESSMENT, PLEASE REFER TO THE COURSE PAGE.
-## BASIC INSTRUCTIONS
-For this project, you will be building your project using IntelliJ IDEA (Ultimate Edition) in a WGU-provided lab environment. You will be working with an existing MySQL database and Angular front-end, which are supplied for you in the lab environment. You will share this project to a private external GitLab repository and backup regularly. If you wish to work on it on your local machine, you will also need to download the Angular front-end application and create your own MySQL database. Use the links on your course page to install the integrated development environments (IDE), MySQL WorkBench, and IntelliJ IDEA, and pull the project from the lab environment.  
+# Vacation Booking — Back-End API
 
+A Spring Boot REST API for booking vacation packages and their optional
+excursions. Customers are stored against a country/division address hierarchy,
+build a cart of vacations and add-on excursions, and check out through a
+transactional service that prices the order and issues a tracking number.
 
-## SUPPLEMENTAL RESOURCES  
-1.	How to clone a project to IntelliJ using Git?
+## What it does
 
-> Ensure that you have Git installed on your system and that IntelliJ is installed using [Toolbox](https://www.jetbrains.com/toolbox-app/). Make sure that you are using version 2022.3.2. Once this has been confirmed, click the clone button and use the 'IntelliJ IDEA (HTTPS)' button. This will open IntelliJ with a prompt to clone the proejct. Save it in a safe location for the directory and press clone. IntelliJ will prompt you for your credentials. Enter in your WGU Credentials and the project will be cloned onto your local machine.  
+- **Vacation catalog** — vacations carry a title, description, travel fare, and
+  image, each with a set of optional excursions priced separately.
+- **Customer records** — customers are tied to a division (state/province),
+  which in turn belongs to a country, so addresses validate against a real
+  geographic hierarchy rather than free text.
+- **Cart and checkout** — a cart holds line items for the chosen vacation and
+  excursions. `CheckoutServiceImpl` runs the order in a single transaction:
+  it reloads the full customer record, forces new cart entities to insert
+  rather than merge, stamps timestamps, generates a UUID tracking number, and
+  moves the cart's status to `ordered`.
+- **Order status** — a `StatusType` enum (`pending`, `ordered`, `cancelled`)
+  tracks where a cart sits in its lifecycle.
+- **REST resources** — Spring Data REST exposes the repositories under `/api`,
+  with a dedicated checkout controller for the order flow.
 
-2. How to create a branch and start Development?
+## Data model
 
-- GitLab method
-> Press the '+' button located near your branch name. In the dropdown list, press the 'New branch' button. This will allow you to create a name for your branch. Once the branch has been named, you can select 'Create Branch' to push the branch to your repository.
+Seven JPA entities plus a status enum:
 
-- IntelliJ method
-> In IntelliJ, Go to the 'Git' button on the top toolbar. Select the new branch option and create a name for the branch. Make sure checkout branch is selected and press create. You can now add a commit message and push the new branch to the local repo.
+| Entity | Role |
+|---|---|
+| `Country` | top of the address hierarchy |
+| `Division` | state or province, belongs to a country |
+| `Customer` | belongs to a division, owns one cart |
+| `Vacation` | a bookable package with a travel fare |
+| `Excursion` | an optional add-on to a vacation |
+| `Cart` | an order, carrying status and tracking number |
+| `CartItem` | a line item within a cart |
+| `StatusType` | enum: `pending`, `ordered`, `cancelled` |
 
-## SUPPORT
-If you need additional support, please navigate to the course page and reach out to your course instructor.
-## FUTURE USE
-Take this opportunity to create or add to a simple resume portfolio to highlight and showcase your work for future use in career search, experience, and education!
+## Stack
 
+| | |
+|---|---|
+| Framework | Spring Boot (Web, Data JPA, Data REST) |
+| Database | MySQL 8 |
+| ORM | Hibernate / JPA, Lombok for accessors |
+| Front end | Angular (provided by the course, included under `LabFiles/`) |
+| Build | Maven (wrapper included) |
+
+## Running it
+
+### 1. Create the database
+
+The schema is not generated at runtime (`ddl-auto=none`), so it has to be
+created first. The script builds the database, its eight tables, sample data,
+and the application's MySQL user:
+
+```bash
+mysql -u root -p < "LabFiles/create_and_populate_db.sql"
+```
+
+### 2. Start the API
+
+```bash
+./mvnw spring-boot:run
+```
+
+It serves on port 8080 with REST resources under `/api`.
+
+### 3. Start the front end
+
+The Angular UI shipped with the course lives in `LabFiles/D288 Front End/`:
+
+```bash
+cd "LabFiles/D288 Front End"
+npm install
+ng serve
+```
+
+It calls the API at `http://localhost:8080`, so start the back end first.
+
+## Project layout
+
+```
+src/main/java/com/example/d288/
+├── entities/      # Country, Division, Customer, Vacation,
+│                  # Excursion, Cart, CartItem, StatusType
+├── dao/           # Spring Data repositories
+├── services/      # checkout service, purchase request/response
+├── controllers/   # checkout controller
+├── config/        # Spring Data REST configuration
+└── DataLoader.java
+
+LabFiles/          # course-supplied material: Angular front end,
+                   # database script, UML and ERD diagrams
+```
+
+## Notes
+
+The Angular front end under `LabFiles/` was provided by the course and could not
+be modified — the work in this repository is the Spring Boot back end in `src/`.
+
+The MySQL credentials in `application.properties` are the localhost-only
+defaults created by `create_and_populate_db.sql`; they grant access to nothing
+beyond a local sample database.
